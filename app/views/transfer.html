@@ -1,0 +1,35 @@
+<ng-include src="'nav.html'"></ng-include>
+<h1>{{user.datas.name}} Transfer</h1>
+<form name="transfer" ng-submit="trans.confirm(transfer.$valid)" novalidate>
+  <div>
+    <label>Source account</label>
+    <select name="account" ng-model="form.selectedAccount" required>
+      <option ng-repeat="account in accounts" value="{{account.no}}">
+        {{account.no}} | {{account.currency}} | {{account.balance}}
+      </option>
+    </select>
+    <div class="error">
+      This field is required
+    </div>
+  </div>
+  <div>
+    <label>Dest</label>
+    <input type="text" name="destination" ng-model="form.destination" not-equal="{{form.selectedAccount}}" giro giro-format required>
+    <div class="error">
+      <span ng-show="transfer.destination.$error.required">This field is required</span>
+      <span ng-show="transfer.destination.$error.notEqual">The dest can not be the source</span>
+      <span ng-show="transfer.destination.$error.giro">Invalid account number</span>
+    </div>
+  </div>
+  <div>
+    <label>Amount</label>
+    <input type="text" name="amount" ng-model="form.amount" ng-pattern="/^[0-9,]+$/" number-format required>
+    <div class="error">
+      <span ng-show="transfer.amount.$error.required">This field is required</span>
+      <span ng-show="transfer.amount.$error.pattern">Just numbers</span>
+    </div>
+  </div>
+  <div>
+    <input ng-disabled="transfer.$invalid" type="submit" name="send" value="next">
+  </div>
+</form>

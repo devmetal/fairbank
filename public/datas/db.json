@@ -1,0 +1,52 @@
+{
+  "users":
+    [
+      {
+        "login":"adam",
+        "pass":"adam",
+        "enabled":true,
+        "datas":{
+          "name":"Metál Ádám",
+          "accounts":[
+            {"no":"12345", "currency":"HUF", "balance":120000},
+            {"no":"123456", "currency":"HUF", "balance":50000},
+            {"no":"1234567", "currency":"HUF", "balance":50000}
+          ],
+          "transactions": {
+              "12345":[
+                {"source":"12345", "dest":"54321", "currency":"HUF", "amount":"30000", "type":"out"},
+                {"source":"12345", "dest":"54321", "currency":"HUF", "amount":"30000", "type":"out"},
+                {"source":"12345", "dest":"54321", "currency":"HUF", "amount":"30000", "type":"out"},
+                {"source":"12345", "dest":"54321", "currency":"HUF", "amount":"30000", "type":"out"},
+                {"source":"54321", "dest":"12345", "currency":"HUF", "amount":"22000", "type":"in"}
+              ],
+              "123456":[
+                {"source":"3213123", "dest":"123456", "currency":"HUF", "amount":"100000", "type":"in"},
+                {"source":"123456", "dest":"12345", "currency":"HUF", "amount":"60000", "type":"out"}
+              ],
+              "1234567":[]
+            }
+        }
+      },
+      {
+        "login":"bela",
+        "pass":"bela",
+        "enabled":true,
+        "datas":{
+          "name":"Kiss Béla",
+          "accounts":[
+          ]
+        }
+      },
+      {
+        "login":"cecil",
+        "pass":"cecil",
+        "enabled":false,
+        "datas":{
+          "name":"Nagy Cecil",
+          "accounts":[
+          ]
+        }
+      }
+    ]
+}

@@ -1,0 +1,23 @@
+<div ng-switch on="haveAccount()">
+  <div ng-switch-when="true">
+    <table>
+      <thead>
+        <tr>
+          <th>Account number</th>
+          <th>Currency</th>
+          <th>Balance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="account in user.datas.accounts">
+          <td>{{account.no}}</td>
+          <td>{{account.currency}}</td>
+          <td>{{account.balance}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div ng-switch-when="false">
+    <h2>We are sorry, but you have not any bank account</h2>
+  </div>
+</div>

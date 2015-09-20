@@ -1,0 +1,6 @@
+<form name="auth-form" ng-submit="auth.login()" role="form">
+  <input type="text" ng-model="auth.name" placeholder="Username" required>
+  <input type="password" ng-model="auth.pass" placeholder="Password" required>
+  <input type="submit" value="login">
+</form>
+{{error}}

@@ -1,0 +1,5 @@
+node_modules/
+public/scripts/
+public/styles/
+public/index.html
+app/js/templates.js

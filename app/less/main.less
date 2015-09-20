@@ -1,0 +1,20 @@
+div.error {
+  display: none;
+  color: red;
+}
+
+input {
+  &.ng-dirty {
+    &.ng-invalid {
+        & + div.error {
+          display: block;
+        }
+    }
+
+    &.ng-valid {
+      div.error {
+        display: : none;
+      }
+    }
+  }
+}
