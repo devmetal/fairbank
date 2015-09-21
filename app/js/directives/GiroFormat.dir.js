@@ -9,7 +9,7 @@ module.exports = ['$filter', ($filter) => {
       });
 
       ctrl.$parsers.push((value) => {
-        let plain = value.replace('-', '');
+        let plain = value.replace('\-', '');
         elem.val($filter('giroFilter')(plain));
         return plain;
       });

@@ -1,0 +1,28 @@
+<div ng-if="transfer.isConfirm()">
+	<h1>Confirm you transfer</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>Source</th>
+				<th>Dest</th>
+				<th>Amount</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>{{transfer.transfer.source}}</td>
+				<td>{{transfer.transfer.destination}}</td>
+				<td>{{transfer.transfer.amount}}</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<button ng-click="transfer.startTransfer()">Start transfer</button>
+</div>
+<div ng-if="transfer.isTransfering()">
+	We working, because we are a fair bank
+</div>
+<div ng-if="transfer.isTransfered()">
+	Now your money is ours!
+	<button ng-click="transfer.back()">Back</button>
+</div>

@@ -9,6 +9,7 @@ let GreetingController = require('./controllers/Greeting.cnt');
 let AccountsController = require('./controllers/Accounts.cnt');
 let HomeController     = require('./controllers/Home.cnt');
 let HistoryController  = require('./controllers/history.cnt');
+let TransferFormController = require('./controllers/TransferForm.cnt');
 let TransferController = require('./controllers/Transfer.cnt');
 let AuthController     = require('./controllers/Auth.cnt.js');
 
@@ -20,6 +21,7 @@ let GiroFormatDirective   = require('./directives/GiroFormat.dir');
 
 let UserService = require('./services/User.srv');
 let AuthService = require('./services/Auth.srv');
+let TransferService = require('./services/Transfer.srv');
 
 let GiroFilter = require('./filters/Giro.fil');
 
@@ -30,11 +32,13 @@ Bank.controller('GreetingController', GreetingController);
 Bank.controller('HomeController', HomeController);
 Bank.controller('AccountsController', AccountsController);
 Bank.controller('TransferController', TransferController);
+Bank.controller('TransferFormController', TransferFormController);
 Bank.controller('HistoryController', HistoryController);
 Bank.controller('AuthController', AuthController);
 
 Bank.service('UserService', UserService);
 Bank.service('AuthService', AuthService);
+Bank.service('TransferService', TransferService);
 
 Bank.directive('accounts',     () => new AccountsDirective());
 Bank.directive('notEqual',     () => new NotEqualDirective());
@@ -55,9 +59,15 @@ Bank.config(['$routeProvider', ($routeProvider) => {
       controller: 'AuthController',
       controllerAs: 'auth'
     })
-    .when('/transfer', {
+    .when('/transfer/', {
       templateUrl: 'transfer.html',
-      controller: 'TransferController'
+      controller: 'TransferFormController',
+      controllerAs: 'form'
+    })
+    .when('/transfer/confirm', {
+        templateUrl: 'confirm.html',
+        controller: 'TransferController',
+        controllerAs: 'transfer'
     })
     .when('/history', {
       templateUrl: 'history.html',

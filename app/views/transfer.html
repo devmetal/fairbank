@@ -1,10 +1,11 @@
 <ng-include src="'nav.html'"></ng-include>
-<h1>{{user.datas.name}} Transfer</h1>
-<form name="transfer" ng-submit="trans.confirm(transfer.$valid)" novalidate>
+
+<h1>{{form.user.datas.name}} Transfer</h1>
+<form name="transfer" ng-submit="form.sendForm(transfer.$valid)" novalidate>
   <div>
     <label>Source account</label>
-    <select name="account" ng-model="form.selectedAccount" required>
-      <option ng-repeat="account in accounts" value="{{account.no}}">
+    <select name="account" ng-model="form.datas.source" required>
+      <option ng-repeat="account in form.accounts" value="{{account.no}}">
         {{account.no}} | {{account.currency}} | {{account.balance}}
       </option>
     </select>
@@ -14,7 +15,7 @@
   </div>
   <div>
     <label>Dest</label>
-    <input type="text" name="destination" ng-model="form.destination" not-equal="{{form.selectedAccount}}" giro giro-format required>
+    <input type="text" name="destination" ng-model="form.datas.destination" not-equal="{{form.datas.source}}" giro giro-format required>
     <div class="error">
       <span ng-show="transfer.destination.$error.required">This field is required</span>
       <span ng-show="transfer.destination.$error.notEqual">The dest can not be the source</span>
@@ -23,7 +24,7 @@
   </div>
   <div>
     <label>Amount</label>
-    <input type="text" name="amount" ng-model="form.amount" ng-pattern="/^[0-9,]+$/" number-format required>
+    <input type="text" name="amount" ng-model="form.datas.amount" ng-pattern="/^[0-9,]+$/" number-format required>
     <div class="error">
       <span ng-show="transfer.amount.$error.required">This field is required</span>
       <span ng-show="transfer.amount.$error.pattern">Just numbers</span>
