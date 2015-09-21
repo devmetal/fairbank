@@ -1,21 +1,15 @@
-<div ng-switch on="haveAccount()">
+<div ng-switch on="haveAccount()" layout="row" layout-align="left center">
   <div ng-switch-when="true">
-    <table>
-      <thead>
-        <tr>
-          <th>Account number</th>
-          <th>Currency</th>
-          <th>Balance</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="account in user.datas.accounts">
-          <td>{{account.no}}</td>
-          <td>{{account.currency}}</td>
-          <td>{{account.balance}}</td>
-        </tr>
-      </tbody>
-    </table>
+    <md-list>
+      <md-subheader>Accounts</md-subheader>
+      <md-list-item class="md-3-line" ng-repeat="account in user.datas.accounts">
+        <div class="md-list-item-text" layout="column">
+          <h3><b>No.:</b> {{account.no}}</h3>
+          <h4><b>Currency:</b> {{account.currency}}</h4>
+          <p><b>Balance:</b> {{account.balance}}</p>
+        </div>
+      </md-list-item>
+    </md-list>
   </div>
   <div ng-switch-when="false">
     <h2>We are sorry, but you have not any bank account</h2>

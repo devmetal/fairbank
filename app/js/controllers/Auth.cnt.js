@@ -16,7 +16,7 @@ class AuthController {
     this.userService.login(name, pass)
       .then(
         () => {
-          this.rootScope.user = this.userService.getUser();
+          this.rootScope.rootUser = this.userService.getUser();
           this.location.path('/');
         },
         (err) => {

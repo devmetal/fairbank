@@ -1,3 +1,27 @@
-<ng-include src="'nav.html'"></ng-include>
-<h1>{{user.datas.name}} Home page</h1>
-<accounts user="user"></accounts>
+<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+  <md-toolbar class="md-whiteframe-z1">
+    <h3>{{user.datas.name}}</h3>
+  </md-toolbar>
+  <md-content layout="column" flex>
+    <md-list>
+      <md-list-item layout="row">
+        <md-button href="#/home/accounts">Home</md-button>
+      </md-list-item>
+
+      <md-list-item layout="row">
+        <md-button href="#/home/transfer">Transfer</md-button>
+      </md-list-item>
+
+      <md-list-item layout="row">
+        <md-button href="#/home/history">History</md-button>
+      </md-list-item>
+
+      <md-list-item layout="row">
+        <md-button href="#/logout">Logout</md-button>
+      </md-list-item>
+    </md-list>
+  </md-content>
+</md-sidenav>
+<div layout="column" layout-fill role="main" flex>
+  <md-content layout="column" ui-view flex></md-content>
+</div>

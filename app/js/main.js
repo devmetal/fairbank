@@ -3,7 +3,11 @@
 require("babelify/polyfill");
 
 let angular = require('angular');
-let route   = require('angular-route');
+
+require('angular-ui-router');
+require('angular-animate');
+require('angular-material');
+require('./templates');
 
 let GreetingController = require('./controllers/Greeting.cnt');
 let AccountsController = require('./controllers/Accounts.cnt');
@@ -25,8 +29,7 @@ let TransferService = require('./services/Transfer.srv');
 
 let GiroFilter = require('./filters/Giro.fil');
 
-require('./templates');
-let Bank = angular.module('Bank', ['templates','ngRoute']);
+let Bank = angular.module('Bank', ['templates', 'ui.router', 'ngMaterial']);
 
 Bank.controller('GreetingController', GreetingController);
 Bank.controller('HomeController', HomeController);
@@ -48,45 +51,52 @@ Bank.directive('giroFormat',   GiroFormatDirective);
 
 Bank.filter('giroFilter', GiroFilter);
 
-Bank.config(['$routeProvider', ($routeProvider) => {
-  $routeProvider
-    .when('/', {
+Bank.config(['$stateProvider', '$urlRouterProvider', ($stateProvider, $urlRouterProvider) => {
+
+  $urlRouterProvider.otherwise('/home/accounts');
+
+  $stateProvider
+    .state('home', {
+      url: '/home',
       templateUrl: 'home.html',
-      controller: 'HomeController'
+      controller: 'HomeController as home'
     })
-    .when('/login', {
+    .state('home.accounts', {
+      url: '/accounts',
+      templateUrl: 'home.accounts.html',
+      controller: 'HomeController as home'
+    })
+    .state('home.transfer', {
+      url: '/transfer',
+      templateUrl: 'home.transfer.html',
+      controller: 'TransferFormController as form'
+    })
+    .state('home.transfer-confirm', {
+      url: '/transfer-confirm',
+      templateUrl: 'home.transfer.confirm.html',
+      controller: 'TransferController as transfer'
+    })
+    .state('home.history', {
+      url: '/history',
+      templateUrl: 'home.history.html',
+      controller: 'HistoryController as history'
+    })
+    .state('home.history-no', {
+      url: '/history/:no',
+      templateUrl: 'home.history.html',
+      controller: 'HistoryController as history'
+    })
+    .state('login', {
+      url: '/login',
       templateUrl: 'login.html',
-      controller: 'AuthController',
-      controllerAs: 'auth'
+      controller: 'AuthController as auth'
     })
-    .when('/transfer/', {
-      templateUrl: 'transfer.html',
-      controller: 'TransferFormController',
-      controllerAs: 'form'
-    })
-    .when('/transfer/confirm', {
-        templateUrl: 'confirm.html',
-        controller: 'TransferController',
-        controllerAs: 'transfer'
-    })
-    .when('/history', {
-      templateUrl: 'history.html',
-      controller: 'HistoryController',
-      controllerAs: 'history'
-    })
-    .when('/history/:no', {
-      templateUrl: 'history.html',
-      controller: 'HistoryController',
-      controllerAs: 'history'
-    })
-    .when('/logout', {
-      resolve: [($location, UserService) => {
+    .state('logout', {
+      url: '/logout',
+      onEnter: ($location, UserService) => {
         UserService.logout();
         $location.path('/login');
-      }]
-    })
-    .otherwise({
-      redirectTo: '/'
+      }
     });
 }]);
 

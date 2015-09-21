@@ -2,6 +2,7 @@
 
 class TransferController {
   constructor(userService, transferService, $location) {
+    console.log('fuck');
     if (!transferService.hasTransfer()) {
       $location.path('/transfer');
     } else {
@@ -12,7 +13,7 @@ class TransferController {
       this.transfer = this.transferService.getTransferDatas();
     }
   }
-  
+
   startTransfer() {
     this.state = 'transfering';
     this.transferService.doTransfer()
@@ -20,19 +21,19 @@ class TransferController {
         this.state = 'transfered';
       });
   }
-  
+
   back() {
-    this.location.path('/transfer');
+    this.location.path('/home/transfer');
   }
-  
+
   isConfirm() {
     return this.state === 'confirm';
   }
-  
+
   isTransfering() {
     return this.state === 'transfering';
   }
-  
+
   isTransfered() {
     return this.state === 'transfered';
   }

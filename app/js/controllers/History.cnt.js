@@ -1,18 +1,18 @@
 'use strict';
 
 class HistoryController {
-  constructor($scope, $location, $routeParams, userService) {
+  constructor($scope, $state, $stateParams, userService) {
     this.scope = $scope;
-    this.location = $location;
+    this.state = $state;
 
     let user = userService.getUser();
     this.scope.user = user;
     this.scope.accounts = user.datas.accounts;
 
-    if ($routeParams.no) {
-      this.scope.current = $routeParams.no;
+    if ($stateParams.no) {
+      this.scope.current = $stateParams.no;
 
-      let transactions = userService.getTransactions($routeParams.no);
+      let transactions = userService.getTransactions($stateParams.no);
       if (!transactions || !transactions.length) {
         this.scope.flash = 'No history';
       } else {
@@ -20,7 +20,7 @@ class HistoryController {
       }
 
       this.scope.selected = user.datas.accounts.find((acc) => {
-        return acc.no === $routeParams.no
+        return acc.no === $stateParams.no
       });
     } else {
       this.scope.selected = user.datas.accounts[0];
@@ -28,10 +28,10 @@ class HistoryController {
   }
 
   getAccountHistory() {
-    this.location.path('/history/' + this.scope.selected.no);
+    this.state.go('home.history-no', {no:this.scope.selected.no});
   }
 }
 
-HistoryController.$inject = ['$scope', '$location', '$routeParams', 'UserService'];
+HistoryController.$inject = ['$scope', '$state', '$stateParams', 'UserService'];
 
 module.exports = HistoryController;
