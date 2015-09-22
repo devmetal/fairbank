@@ -38,7 +38,7 @@ describe('AuthService', () => {
   it('Login disabled user', (done) => {
     authSvr.auth('demo', 'demo')
       .catch((err) => {
-        expect(err).to.be.equal('Disabled user');
+        expect(err).not.to.be.null;
         done();
       });
 

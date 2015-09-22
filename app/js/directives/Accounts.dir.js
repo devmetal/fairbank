@@ -1,18 +1,16 @@
 'use strict';
 
-class AccountsDirective {
-  constructor() {
-    this.templateUrl = 'user-accounts.html';
-    this.restrict = 'AEC';
-    this.scope = {
+module.exports = () => {
+  return {
+    restrict: 'AEC',
+    templateUrl: 'user-accounts.html',
+    scope: {
       user: '=user'
-    };
-    this.controller = ($scope) => {
+    },
+    controller($scope) {
       $scope.haveAccount = () => {
         return !!$scope.user.datas.accounts.length;
       }
     }
   }
 }
-
-module.exports = AccountsDirective;

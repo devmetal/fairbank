@@ -1,7 +1,8 @@
 'use strict';
 
 class TransferFormController {
-	constructor(userService, transferService, $state) {
+	constructor(pageService, userService, transferService, $state) {
+		pageService.setTitle('Átutalás kezdeményezése')
 		this.transferService = transferService;
 		this.userService = userService;
 		this.state = $state;
@@ -24,6 +25,6 @@ class TransferFormController {
 	}
 }
 
-TransferFormController.$inject = ['UserService','TransferService','$state'];
+TransferFormController.$inject = ['PageService', 'UserService', 'TransferService', '$state'];
 
 module.exports = TransferFormController;

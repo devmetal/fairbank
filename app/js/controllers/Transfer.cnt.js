@@ -1,8 +1,10 @@
 'use strict';
 
 class TransferController {
-  constructor(userService, transferService, $location) {
-    console.log('fuck');
+  constructor(pageService, userService, transferService, $location) {
+    pageService.setTitle('Átutalás megerősítése');
+    this.pageService = pageService;
+
     if (!transferService.hasTransfer()) {
       $location.path('/transfer');
     } else {
@@ -19,6 +21,7 @@ class TransferController {
     this.transferService.doTransfer()
       .then((result) => {
         this.state = 'transfered';
+        this.pageService.setTitle('Kész');
       });
   }
 
@@ -39,6 +42,6 @@ class TransferController {
   }
 }
 
-TransferController.$inject = ['UserService', 'TransferService', '$location'];
+TransferController.$inject = ['PageService', 'UserService', 'TransferService', '$location'];
 
 module.exports = TransferController;

@@ -7,12 +7,12 @@ let angular = require('angular');
 require('angular-ui-router');
 require('angular-animate');
 require('angular-material');
+require('angular-messages');
 require('./templates');
 
-let GreetingController = require('./controllers/Greeting.cnt');
-let AccountsController = require('./controllers/Accounts.cnt');
 let HomeController     = require('./controllers/Home.cnt');
-let HistoryController  = require('./controllers/history.cnt');
+let HistoryController  = require('./controllers/History.cnt');
+let HistoryDetailsController = require('./controllers/HistoryDetails.cnt.js');
 let TransferFormController = require('./controllers/TransferForm.cnt');
 let TransferController = require('./controllers/Transfer.cnt');
 let AuthController     = require('./controllers/Auth.cnt.js');
@@ -22,32 +22,37 @@ let NotEqualDirective     = require('./directives/NotEqual.dir');
 let GiroDirective         = require('./directives/Giro.dir');
 let NumberFormatDirective = require('./directives/NumberFormat.dir');
 let GiroFormatDirective   = require('./directives/GiroFormat.dir');
+let LogoutButtonDirective  = require('./directives/LogoutButton.dir');
 
 let UserService = require('./services/User.srv');
 let AuthService = require('./services/Auth.srv');
 let TransferService = require('./services/Transfer.srv');
+let PageService = require('./services/Page.srv');
+let ErrorService = require('./services/Error.srv');
 
 let GiroFilter = require('./filters/Giro.fil');
 
-let Bank = angular.module('Bank', ['templates', 'ui.router', 'ngMaterial']);
+let Bank = angular.module('Bank', ['templates', 'ui.router', 'ngMaterial', 'ngMessages']);
 
-Bank.controller('GreetingController', GreetingController);
 Bank.controller('HomeController', HomeController);
-Bank.controller('AccountsController', AccountsController);
 Bank.controller('TransferController', TransferController);
 Bank.controller('TransferFormController', TransferFormController);
 Bank.controller('HistoryController', HistoryController);
+Bank.controller('HistoryDetailsController', HistoryDetailsController);
 Bank.controller('AuthController', AuthController);
 
 Bank.service('UserService', UserService);
 Bank.service('AuthService', AuthService);
 Bank.service('TransferService', TransferService);
+Bank.service('PageService', PageService);
+Bank.service('ErrorService', ErrorService);
 
-Bank.directive('accounts',     () => new AccountsDirective());
-Bank.directive('notEqual',     () => new NotEqualDirective());
-Bank.directive('giro',         () => new GiroDirective());
+Bank.directive('accounts',     AccountsDirective);
+Bank.directive('notEqual',     NotEqualDirective);
+Bank.directive('giro',         GiroDirective);
 Bank.directive('numberFormat', NumberFormatDirective);
 Bank.directive('giroFormat',   GiroFormatDirective);
+Bank.directive('logoutBtn',    LogoutButtonDirective);
 
 Bank.filter('giroFilter', GiroFilter);
 
@@ -56,43 +61,60 @@ Bank.config(['$stateProvider', '$urlRouterProvider', ($stateProvider, $urlRouter
   $urlRouterProvider.otherwise('/home/accounts');
 
   $stateProvider
+    .state('error', {
+      url: '/error',
+      templateUrl: 'error.html',
+      controller: ['$scope', 'ErrorService', ($scope, ErrorService) => {
+        $scope.title = 'Hiba történt!';
+        $scope.msg = ErrorService.getMessage();
+      }],
+      auth: true
+    })
     .state('home', {
       url: '/home',
       templateUrl: 'home.html',
-      controller: 'HomeController as home'
+      controller: 'HomeController as home',
+      auth: true
     })
     .state('home.accounts', {
       url: '/accounts',
       templateUrl: 'home.accounts.html',
-      controller: 'HomeController as home'
+      controller: 'HomeController as home',
+      auth: true
     })
     .state('home.transfer', {
       url: '/transfer',
       templateUrl: 'home.transfer.html',
-      controller: 'TransferFormController as form'
+      controller: 'TransferFormController as form',
+      auth: true
     })
     .state('home.transfer-confirm', {
       url: '/transfer-confirm',
       templateUrl: 'home.transfer.confirm.html',
-      controller: 'TransferController as transfer'
+      controller: 'TransferController as transfer',
+      auth: true
     })
     .state('home.history', {
       url: '/history',
       templateUrl: 'home.history.html',
-      controller: 'HistoryController as history'
+      controller: 'HistoryController as historyCt',
+      auth: true
     })
-    .state('home.history-no', {
-      url: '/history/:no',
-      templateUrl: 'home.history.html',
-      controller: 'HistoryController as history'
+    .state('home.history.details', {
+      url: '/:no',
+      templateUrl: 'home.history.details.html',
+      controller: 'HistoryDetailsController as details',
+      auth: true
     })
     .state('login', {
       url: '/login',
       templateUrl: 'login.html',
-      controller: 'AuthController as auth'
+      controller: 'AuthController as auth',
+      auth: false
     })
     .state('logout', {
       url: '/logout',
+      auth: true,
       onEnter: ($location, UserService) => {
         UserService.logout();
         $location.path('/login');
@@ -100,10 +122,17 @@ Bank.config(['$stateProvider', '$urlRouterProvider', ($stateProvider, $urlRouter
     });
 }]);
 
-Bank.run(['$rootScope', '$location', 'UserService', ($rootScope, $location, userService) => {
-  $rootScope.$on('$locationChangeStart', () => {
-    if (!userService.isAuthenticated()) {
+Bank.run(['$rootScope', '$location', 'UserService', 'ErrorService', ($rootScope, $location, userService, errorService) => {
+  $rootScope.$on('$stateChangeStart', (event, to, params) => {
+    let isAuthenticated = userService.isAuthenticated();
+    if (to.auth === true && !isAuthenticated) {
       $location.path('/login');
+      return;
+    }
+
+    if (isAuthenticated && !userService.hasAccount()) {
+      errorService.setMessage('Önnek nincs aktív számlája a rendszerünkben');
+      $location.path('/error');
     }
   });
 }]);

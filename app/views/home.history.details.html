@@ -1,0 +1,12 @@
+<div ng-if="details.flash">
+  {{details.flash}}
+</div>
+<md-list ng-if="details.transactions">
+  <md-list-item class="md-3-line" ng-repeat="transaction in details.transactions">
+    <div class="md-list-item-text" layout="column">
+      <h3><b>{{transaction.source}}</b> {{transaction.amount}}{{transaction.currency}}</h3>
+      <h3>{{transaction.type}}</h3>
+      <h4>Célszámla: {{transaction.dest}}</h4>
+    </div>
+  </md-list-item>
+</md-list>

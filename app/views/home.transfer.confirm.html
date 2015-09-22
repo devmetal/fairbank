@@ -1,12 +1,10 @@
-<h1>Baszódj meg</h1>
 <div ng-if="transfer.isConfirm()">
-	<h1>Confirm you transfer</h1>
 	<table>
 		<thead>
 			<tr>
-				<th>Source</th>
-				<th>Dest</th>
-				<th>Amount</th>
+				<th>Forrás</th>
+				<th>Cél</th>
+				<th>Összeg</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -18,12 +16,12 @@
 		</tbody>
 	</table>
 
-	<button ng-click="transfer.startTransfer()">Start transfer</button>
+	<md-button ng-click="transfer.startTransfer()">Indítás</md-button>
 </div>
 <div ng-if="transfer.isTransfering()">
-	We working, because we are a fair bank
+	Dolgozunk az ügyön, mert ilyen jók vagyunk
 </div>
 <div ng-if="transfer.isTransfered()">
-	Now your money is ours!
-	<button ng-click="transfer.back()">Back</button>
+	A pénzed már a mienk, köszönyjük
+	<md-button ng-click="transfer.back()">Vissza</md-button>
 </div>

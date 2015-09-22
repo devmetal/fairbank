@@ -21,10 +21,10 @@ class AuthService {
             if (user[0].enabled === true) {
               resolve(user[0]);
             } else {
-              reject('Disabled user');
+              reject('Letiltott felhasználó');
             }
           } else {
-            reject('User not found');
+            reject('Hibás felhasználónév vagy jelszó');
           }
         }, (err) => {
           reject(err);

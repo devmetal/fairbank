@@ -1,35 +1,9 @@
-<h1>{{user.datas.name}} History</h1>
-<form name="account" ng-submit="history.getAccountHistory()">
-  <select
-    name="account"
-    ng-options="option.no for option in accounts track by option.no"
-    ng-model="selected">
-  </select>
-  <input type="submit" value="Get History">
+<form name="account" ng-submit="historyCt.getAccountHistory()">
+  <md-select name="account" ng-model="historyCt.account">
+    <md-option value="{{option.no}}" ng-repeat="option in historyCt.accounts track by option.no">
+      {{option.no}}
+    </md-option>
+  </md-select>
+  <md-button type="submit">Mutat</md-button>
 </form>
-<div ng-if="flash">
-  {{flash}}
-</div>
-<div ng-if="transactions">
-  <h1>{{current}}</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>Source</th>
-        <th>Dest</th>
-        <th>Currency</th>
-        <th>Amount</th>
-        <th>Type</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-repeat="transaction in transactions">
-        <td>{{transaction.source}}</td>
-        <td>{{transaction.dest}}</td>
-        <td>{{transaction.currency}}</td>
-        <td>{{transaction.amount}}</td>
-        <td>{{transaction.type}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<div ui-view></div>

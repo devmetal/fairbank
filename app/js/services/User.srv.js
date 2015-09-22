@@ -48,8 +48,18 @@ class UserService {
     }
   }
 
+  hasAccount() {
+    return !!session.get('user').datas.accounts.length;
+  }
+
   getAccounts() {
     return session.get('user').datas.accounts;
+  }
+
+  getAccount(no) {
+    return session.get('user').datas.accounts.find((acc) => {
+      return acc.no === no
+    });
   }
 }
 
